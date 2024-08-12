@@ -1,65 +1,76 @@
-import prisma from "../lib/prisma.js";
+import supabase from "../lib/supabase.js";
 import route from "../lib/route.js";
 
 const postController = route;
 
 postController.get("/", async (req, res) => {
-    const postsData = await prisma.post.findMany();
+    const { data, error, status, statusText } = await supabase
+        .from("blog")
+        .select("*");
 
+    if (error) console.error(error);
     return res.send({
-        data: postsData,
+        status,
+        statusText,
+        data,
     });
 });
 
 postController.get("/:id", async (req, res) => {
-    const postsData = await prisma.post.findFirst({
-        where: { id: parseInt(req.params.id) },
-    });
+    const { data, error, status } = await supabase
+        .from("blog")
+        .select("*")
+        .eq("id", parseInt(req.params.id));
 
+    if (error) console.error(error);
     return res.send({
-        data: postsData,
+        status,
+        data,
     });
 });
 
 postController.post("/", async (req, res) => {
-    const { title, content } = req.body;
+    const { title, body } = req.body;
 
-    const postsData = await prisma.post.create({
-        data: { title, content },
-    });
+    const { error, status } = await supabase
+        .from("blog")
+        .insert({ title, body });
 
+    if (error) console.error(error);
     return res.send({
-        data: postsData,
+        status,
+        msg: "created",
     });
 });
 
 postController.patch("/:id", async (req, res) => {
     const { id } = req.params;
-    const { title, content } = req.body;
+    const { title, body } = req.body;
 
-    const postsData = await prisma.post.update({
-        where: {
-            id: parseInt(id),
-        },
-        data: { title, content },
-    });
+    const { error, status } = await supabase
+        .from("blog")
+        .update({ title, body })
+        .eq("id", parseInt(id));
 
+    if (error) console.error(error);
     return res.send({
-        data: postsData,
+        status,
+        msg: "updated",
     });
 });
 
 postController.delete("/:id", async (req, res) => {
     const { id } = req.params;
 
-    const postsData = await prisma.post.delete({
-        where: {
-            id: parseInt(id),
-        },
-    });
+    const { error, status } = await supabase
+        .from("blog")
+        .delete()
+        .eq("id", parseInt(id));
 
+    if (error) console.error(error);
     return res.send({
-        data: postsData,
+        status,
+        msg: "deleted",
     });
 });
 
