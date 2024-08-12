@@ -1,6 +1,6 @@
-import express from "express";
-import postController from "./controller/postController.js";
-import cors from "cors";
+const express = require("express");
+const postController = require("./controller/postController.js");
+const cors = require("cors");
 
 const app = express();
 

@@ -1,9 +1,9 @@
-import path from "path";
+const path = require("path");
 
-export default {
+module.exports = {
     entry: "./src/index.js", // File entry utama
     output: {
-        path: path.resolve("dist"), // Output folder
+        path: path.resolve(__dirname, "dist"), // Output folder
         filename: "bundle.js", // Nama file bundle
         // libraryTarget: "module",
     },
@@ -12,12 +12,7 @@ export default {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ["@babel/preset-env"],
-                    },
-                },
+                use: "babel-loader",
             },
         ],
     },

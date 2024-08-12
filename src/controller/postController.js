@@ -1,5 +1,5 @@
-import supabase from "../lib/supabase.js";
-import route from "../lib/route.js";
+const supabase = require("../lib/supabase.js");
+const route = require("../lib/route.js");
 
 const postController = route;
 
@@ -74,4 +74,4 @@ postController.delete("/:id", async (req, res) => {
     });
 });
 
-export default postController;
+module.exports = postController;
